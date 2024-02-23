@@ -47,10 +47,10 @@ try:
 except sqlite3.Error as err:
     print("An error occured",err)
 
-DDL4 = '''CREATE TABLE [MATCH] (
-          [Match]     TEXT    PRIMARY KEY,
+DDL4 = '''CREATE TABLE if not exists MATCH(
+          Match TEXT PRIMARY KEY,
           candidateID INTEGER REFERENCES CANDIDATE (Candidateid),
-          ClientID    INTEGER REFERENCES CLIENT (Clientid))'''
+          clientID INTEGER REFERENCES CLIENT(Clientid)'''
 
 try:
     conn.execute(DDL4)
@@ -76,21 +76,26 @@ class ProjectMenu:
         self.CreateMatchPage()
         self.Populate_comboBox()
         self.listbox.bind("<<ListboxSelect>>" ,lambda e: self.show_selected_data())
-
+    
     def CreateMenuWidgets(self):
         #creating the widgets for the menu page
         TitleLabel = Label(self.MenuPage, text = "Main Menu", font = ("Arial", 60), bg = "white")
-        CandidateButton = Button(self.MenuPage, text = "Candidate", command = lambda: self.SwitchPage(self.CandidatePage,self.MenuPage))
-        ClientButton = Button(self.MenuPage, text = "Client", command = lambda: self.SwitchPage(self.ClientPage,self.MenuPage))
-        RoleButton = Button(self.MenuPage, text = "Role", command = lambda: self.SwitchPage(self.RolePage,self.MenuPage))
-        MatchButton = Button(self.MenuPage, text = "Match",command = lambda: self.SwitchPage(self.MatchPage,self.MenuPage))
         TitleLabel.grid(row = 0, column = 0,padx = 10, pady = 10)
-        CandidateButton.grid(row = 2, column = 0)
-        ClientButton.grid(row = 1, column = 0)
-        RoleButton.grid(row = 3, column = 0)
-        MatchButton.grid(row =4, column = 0)
-        logo = PhotoImage (file="coach my cv.gif")
-        logoLabel = Label(self.MenuPage,image=logo)
+        
+        self.searchEntry =Entry(self.MenuPage)
+        self.searchEntry.grid(row = 1, column = 5)
+        self.searchLabel = Label(self.MenuPage, text = "Search", font = ("Arial", 15), bg = "white")
+        self.searchLabel.grid(row = 1, column = 2)
+        #  CandidateButton = Button(self.MenuPage, text = "Candidate", command = lambda: self.SwitchPage(self.CandidatePage,self.MenuPage))
+        #  ClientButton = Button(self.MenuPage, text = "Client", command = lambda: self.SwitchPage(self.ClientPage,self.MenuPage))
+        #  RoleButton = Button(self.MenuPage, text = "Role", command = lambda: self.SwitchPage(self.RolePage,self.MenuPage))
+        #  MatchButton = Button(self.MenuPage, text = "Match",command = lambda: self.SwitchPage(self.MatchPage,self.MenuPage))
+        #  CandidateButton.grid(row = 2, column = 0)
+        #  ClientButton.grid(row = 1, column = 0)
+        #  RoleButton.grid(row = 3, column = 0)
+        #  MatchButton.grid(row =4, column = 0)
+        logo = PhotoImage (file="recruitment.gif")
+        logoLabel=Label(self.MenuPage,image=logo)
         logoLabel.photo = logo
         logoLabel.grid(row = 0, column = 10)
 
@@ -139,7 +144,7 @@ class ProjectMenu:
         self.SalaryEntry.grid(row = 12, column = 5)
 
         
-        logo1 = PhotoImage (file="coach my cv.gif")
+        logo1 = PhotoImage (file="recruitment.gif")
         logoLabel2 = Label(self.CandidatePage,image=logo1)
         logoLabel2.photo = logo1
         logoLabel2.grid(row = 0, column = 1)
@@ -333,7 +338,7 @@ class ProjectMenu:
         PhoneNumberLabel.grid(row = 6, column = 1)
         self.PhoneNumberEntry.grid(row = 6, column = 5)
 
-        logo3 = PhotoImage (file="coach my cv.gif")
+        logo3 = PhotoImage (file="recruitment.gif")
         logoLabel3 = Label(self.ClientPage,image=logo3)
         logoLabel3.photo = logo3
         logoLabel3.grid(row = 0, column = 10)
